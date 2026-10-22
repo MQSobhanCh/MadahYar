@@ -1,0 +1,92 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build web app
+        run: npm run build
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Apply app icon and splash
+        run: |
+          cp -r android-res/. android/app/src/main/res/
+          find android/app/src/main/res -name 'splash.png' | while read f; do
+            case "$f" in
+              *land*) cp native-splash/splash-land.png "$f" ;;
+              *) cp native-splash/splash-port.png "$f" ;;
+            esac
+          done
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Build release APK
+        if: env.KEYSTORE_BASE64 != ''
+        working-directory: android
+        run: chmod +x gradlew && ./gradlew assembleRelease
+
+      - name: Align and sign release APK
+        if: env.KEYSTORE_BASE64 != ''
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 -d > maddahyar.keystore
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          RELEASE_DIR=android/app/build/outputs/apk/release
+          UNSIGNED=$(ls $RELEASE_DIR/*.apk | head -1)
+          "$BT/zipalign" -f -p 4 "$UNSIGNED" aligned.apk
+          "$BT/apksigner" sign \
+            --ks maddahyar.keystore \
+            --ks-key-alias "$KEY_ALIAS" \
+            --ks-pass "pass:$KEYSTORE_PASSWORD" \
+            --key-pass "pass:$KEY_PASSWORD" \
+            --out maddahyar-release.apk aligned.apk
+          "$BT/apksigner" verify maddahyar-release.apk
+          rm -f maddahyar.keystore
+
+      - name: Upload signed release APK
+        if: env.KEYSTORE_BASE64 != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: maddahyar-release-apk
+          path: maddahyar-release.apk
+
+      - name: Build debug APK
+        if: env.KEYSTORE_BASE64 == ''
+        working-directory: android
+        run: chmod +x gradlew && ./gradlew assembleDebug
+
+      - name: Upload debug APK
+        if: env.KEYSTORE_BASE64 == ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: maddahyar-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk

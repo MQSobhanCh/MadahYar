@@ -1,0 +1,19 @@
+{
+  "appId": "com.maddahyar.app",
+  "appName": "مداح‌یار",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "backgroundColor": "#020617",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0,
+      "launchAutoHide": true,
+      "backgroundColor": "#020617",
+      "showSpinner": false,
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_INSIDE"
+    }
+  }
+}
