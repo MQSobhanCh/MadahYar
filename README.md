@@ -1,29 +1,61 @@
-# مداح‌یار (MaddahYar)
+ <div align="center">
 
-اپلیکیشن مدیریت نوحه، شعر و روضه برای مداحان — React + Vite + Tailwind v4 + Capacitor.
+# 💚 MadahYar | مداح‌یار
 
-## ساختار
+### A Personal Library for Religious Content
 
-- `src/` — کد برنامه
-- `android-res/` و `native-splash/` — آیکون و صفحه‌ی لودینگ اندروید (workflow موقع ساخت کپی‌شان می‌کند)
-- `.github/workflows/build-apk.yml` — ساخت خودکار APK در GitHub Actions
-- `src/config/app.js` — اطلاعات تماس و لینک فروشگاه‌ها
+اپلیکیشنی برای مدیریت و دسته‌بندی نوحه‌ها، شعرها و روضه‌ها در یک محیط ساده و کاربردی.
 
-## اجرا روی وب
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Capacitor](https://img.shields.io/badge/Capacitor-119EFF?style=for-the-badge&logo=capacitor&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+
+</div>
+
+---
+
+## 📌 درباره پروژه
+
+**مداح‌یار** یک اپلیکیشن برای نگهداری و سازمان‌دهی محتوای موردنیاز مداحان است. هدف آن دسترسی آسان‌تر به مطالب و مدیریت منظم فایل‌های شخصی در دسته‌بندی‌های مختلف است.
+
+## ✨ امکانات
+
+- 📁 ساخت و مدیریت پوشه‌ها
+- 🎙️ دسته‌بندی نوحه، شعر و روضه
+- 📝 ثبت و مدیریت محتوا
+- 🖼️ پشتیبانی از محتوای تصویری و فایل‌های صوتی، مطابق امکانات پیاده‌سازی‌شده
+- 📱 توسعه با قابلیت استفاده در محیط موبایل
+
+## 🛠️ فناوری‌ها
+
+- React
+- JavaScript
+- Vite
+- Capacitor
+- Local Storage
+
+## 🚀 نصب و اجرا
+
+پیش‌نیاز: نصب Node.js و npm
 
 ```bash
+git clone https://github.com/MQSobhanCh/MadahYar.git
+cd MadahYar
 npm install
 npm run dev
 ```
 
-## ساخت APK
+## 👨‍💻 توسعه‌دهنده
 
-با هر push به شاخه‌ی main، workflow در GitHub اجرا می‌شود و APK را در بخش Artifacts می‌گذارد.
-برای نسخه‌ی release امضاشده، چهار Secret لازم است: `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`.
+**Sobhan**
 
-## قالب‌بندی کد
+GitHub: [@MQSobhanCh](https://github.com/MQSobhanCh)
 
-```bash
-npm install
-npm run format
-```
+---
+
+<div align="center">
+
+Made with 💚 by Sobhan
+
+</div>
